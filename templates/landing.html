@@ -24,7 +24,7 @@
         </p>
         <div class="hero-buttons">
             <a href="{{ url_for('register') }}" class="btn-hero">Create free account</a>
-            <a href="#" class="btn-hero">See how it works</a>
+            <a href="#" class="btn-hero" id="howItWorksBtn">See how it works</a>
         </div>
     </div>
     <div class="mock-browser">
@@ -103,4 +103,53 @@
     </div>
 </section>
 
+<!-- Video modal -->
+<div class="video-modal-overlay" id="videoModal" aria-hidden="true">
+    <div class="video-modal">
+        <button class="video-modal-close" id="videoModalClose" aria-label="Close">&times;</button>
+        <div class="video-modal-embed">
+            <iframe
+                id="videoIframe"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                title="Spendly — See how it works"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modal    = document.getElementById('videoModal');
+    const openBtn  = document.getElementById('howItWorksBtn');
+    const closeBtn = document.getElementById('videoModalClose');
+    const iframe   = document.getElementById('videoIframe');
+
+    function openModal(e) {
+        e.preventDefault();
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        iframe.src = iframe.src; // stops playback
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
 {% endblock %}
